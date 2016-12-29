@@ -1,0 +1,37 @@
+{
+  "name": "sop-camera",
+  "version": "1.0.0",
+  "description": "SoP Raspberry Pi Camera",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": ">= 4.x.x"
+  },
+  "author": "Marcio Cunha",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.1.4",
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.x",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.x.x",
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "lodash": "^4.17.3",
+    "method-override": "^2.3.7",
+    "moment": "^2.17.x",
+    "moment-timezone": "^0.5.11",
+    "firebase": "^3.3.2",
+    "firebase-admin": "^4.0.4",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.3.2",
+    "raspicam": "^0.3.x"
+  },
+  "devDependencies": {
+  }
+}
