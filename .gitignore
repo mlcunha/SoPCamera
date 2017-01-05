@@ -1,0 +1,9 @@
+node_modules
+.sass-cache
+.env
+.tmp
+.sass-cache
+.idea
+.project
+*.old
+*.css.map

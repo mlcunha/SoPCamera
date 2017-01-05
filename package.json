@@ -5,7 +5,7 @@
   "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">= 4.x.x"
@@ -30,7 +30,7 @@
     "node-uuid": "^1.4.7",
     "path": "^0.12.7",
     "serve-favicon": "^2.3.2",
-    "raspicam": "^0.3.x"
+    "raspicam": "^0.2.x"
   },
   "devDependencies": {
   }

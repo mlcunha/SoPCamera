@@ -13,9 +13,9 @@ fireAdmin.initializeApp({
   credential: fireAdmin.credential.cert("./server/serviceAccountKey.json"),
   databaseURL: "https://softwareofplaces.firebaseio.com"
 });
-//var logDatabase = fireAdmin.database();
-//var refInsole = logDatabase.ref("smartInsole");
-//var logRef = refInsole.child("logs");
+var logDatabase = fireAdmin.database();
+var refImage = logDatabase.ref("Base65Images");
+var logImage = refImage.child("logs");
 
 // function to encode file data to base64 encoded string
 function base64_encode(file) {
@@ -24,12 +24,6 @@ function base64_encode(file) {
     // convert binary data to base64 encoded string
     return new Buffer(bitmap).toString('base64');
 }
-
-var storage = fireAdmin.storage();
-// Create a storage reference from our storage service
-var storageRef = storage.ref();
-// Create a child reference
-var imagesRef = storageRef.child('/photo/image.jpg');
 
 var RaspiCam = require("raspicam");
 var camera = new RaspiCam({
@@ -45,10 +39,8 @@ camera.on("start", function( err, timestamp ){
 camera.on("read", function( err, timestamp, filename ) {
     console.log(filename);
     var base64str = base64_encode('./photo'+filename);
-    console.log("photo image captured with filename: " + filename );
-    imagesRef.putString(base64str, 'base64').then(function(snapshot) {
-    console.log('Uploaded a base64 string!');
-    });
+    var newLogRef = logImage.push();
+    newLogRef.set(base64str);
 });
 camera.on("exit", function( timestamp ){
 	console.log("photo child process has exited at " + timestamp );
