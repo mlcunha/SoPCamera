@@ -27,10 +27,9 @@
     "firebase": "^3.3.2",
     "firebase-admin": "^4.0.4",
     "morgan": "^1.7.0",
-    "node-uuid": "^1.4.7",
     "path": "^0.12.7",
     "serve-favicon": "^2.3.2",
-    "raspicam": "^0.2.x"
+    "v4l2camera": "^1.x.x"
   },
   "devDependencies": {
   }

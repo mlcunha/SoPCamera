@@ -25,24 +25,58 @@ function base64_encode(file) {
     return new Buffer(bitmap).toString('base64');
 }
 
-var RaspiCam = require("raspicam");
-var camera = new RaspiCam({
-	mode: "photo",
-	output: "./photo/image.jpg",
-	encoding: "jpg",
-	timeout: 0 // take the picture immediately
+var v4l2camera = require("v4l2camera");
+var cam = new v4l2camera.Camera("/dev/video0");
+if (cam.configGet().formatName !== "MJPG") {
+  console.log("NOTICE: MJPG camera required");
+  process.exit(1);
+}
+cam.start();
+cam.capture(function (success) {
+  var frame = cam.frameRaw();
+  require("fs").createWriteStream("result.jpg").end(Buffer(frame));
+  var base64str = base64_encode("result.jpg");
+  var newLogRef = logImage.push();
+  newLogRef.set(base64str);
+  cam.stop();
 });
-//var filePath = path.join(__dirname, './photo/image.jpg');
-camera.on("start", function( err, timestamp ){
-	console.log("photo started at " + timestamp );
-});
-camera.on("read", function( err, timestamp, filename ) {
-    console.log(filename);
-    var base64str = base64_encode('./photo'+filename);
-    var newLogRef = logImage.push();
-    newLogRef.set(base64str);
-});
-camera.on("exit", function( timestamp ){
-	console.log("photo child process has exited at " + timestamp );
-});
-camera.start();
+
+// var RaspiCam = require("raspicam");
+// var camera = new RaspiCam({
+// 	mode: "photo",
+// 	output: "./photo/image.jpg",
+// 	encoding: "jpg",
+// 	timeout: 0 // take the picture immediately
+// });
+// //var filePath = path.join(__dirname, './photo/image.jpg');
+// camera.on("start", function( err, timestamp ){
+// 	console.log("photo started at " + timestamp );
+// });
+// camera.on("read", function( err, timestamp, filename ) {
+//     console.log(filename);
+//     var base64str = base64_encode('./photo'+filename);
+//     var newLogRef = logImage.push();
+//     newLogRef.set(base64str);
+// });
+// camera.on("exit", function( timestamp ){
+// 	console.log("photo child process has exited at " + timestamp );
+// });
+// //camera.start();
+
+// function solution(N) {
+//     // write your code in JavaScript (Node.js 6.4.0)
+//     var nBin = (N >>> 0).toString(2);
+//     var size = 0;
+//     var splitArray = nBin.split("1");
+//     for (var i = 0; i < splitArray.length; i++) {
+//         if(splitArray[i] && splitArray[i].length > 0) {
+//             if(splitArray[i].length > size) {
+//                 size = splitArray[i].length;
+//             }
+//         }
+//     }
+//     console.log(splitArray);
+//     console.log(size);
+//     process.exit(0);
+// }
+// solution(51712)
