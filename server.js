@@ -17,7 +17,7 @@ fireAdmin.initializeApp({
   databaseURL: "https://softwareofplaces.firebaseio.com"
 });
 var logDatabase = fireAdmin.database();
-var refImage = logDatabase.ref("Base65Images");
+var refImage = logDatabase.ref("Base64Images");
 var logImage = refImage.child("logs");
 
 var app = express()
@@ -39,10 +39,13 @@ function base64_encode(file) {
 };
 function saveFile (_callback) {
   var base64str = base64_encode('photo/teste.jpg');
+  var dataObj = {
+    imageBase64 : base64str
+  }
   var newLogRef = logImage.push();
-  newLogRef.set(base64str).then(function(snapshot) {
-    _callback(false,snapshot);
-  });;
+  newLogRef.set(dataObj, function (err) {
+    _callback(err,base64str);
+  });
 };
 
 app.get('/takePicture', function (req, res) {
@@ -51,7 +54,11 @@ app.get('/takePicture', function (req, res) {
       function(data) {
         //console.log(data);
         saveFile(function(_err, _data){
-          res.send(_data).end();
+          if(!err) {
+            res.send(_data).end();
+          } else {
+            res.send('Erro ao Salvar no Banco').end();
+          }
         });
       }
   );
