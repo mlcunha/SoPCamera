@@ -1,1 +1,1 @@
-apt-get update && apt-get install fswebcam && apt-get install tlsdate && tlsdate -H mail.google.com
+apt-get update && apt-get install fswebcam && apt-get install tlsdate
