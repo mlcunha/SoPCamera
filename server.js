@@ -30,12 +30,29 @@ app.get('/', function (req, res) {
   res.send('hello world')
 });
 
+// function to encode file data to base64 encoded string
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+};
+function saveFile (_callback) {
+  var base64str = base64_encode('photo/teste.jpg');
+  var newLogRef = logImage.push();
+  newLogRef.set(base64str).then(function(snapshot) {
+    _callback(false,snapshot);
+  });;
+};
+
 app.get('/takePicture', function (req, res) {
   cmd.get(
-      'fswebcam -r 1280x720 --no-banner photo/teste.jpg',
+      'fswebcam -r 1280x960 --no-banner photo/teste.jpg',
       function(data) {
-        console.log(data);
-        res.send('OK, Foto tirada');
+        //console.log(data);
+        saveFile(function(_err, _data){
+          res.send(_data).end();
+        });
       }
   );
 });
@@ -47,13 +64,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
 });
 
 
-// function to encode file data to base64 encoded string
-function base64_encode(file) {
-    // read binary data
-    var bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString('base64');
-}
+
 
 // var v4l2camera = require("v4l2camera");
 // var cam = new v4l2camera.Camera("/dev/video0");
