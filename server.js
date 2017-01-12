@@ -13,10 +13,11 @@ var cmd = require('node-cmd');
 var moment = require("moment");
 var fireAdmin = require("firebase-admin");
 fireAdmin.initializeApp({
-  credential: fireAdmin.credential.cert("./server/serviceAccountKey.json"),
+  credential: fireAdmin.credential.cert(path.join(__dirname,'/server/serviceAccountKey.json')),
   databaseURL: "https://softwareofplaces.firebaseio.com"
 });
 var logDatabase = fireAdmin.database();
+console.log(logDatabase);
 var refImage = logDatabase.ref("Base64Images");
 var logImage = refImage.child("logs");
 
