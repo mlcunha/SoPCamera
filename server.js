@@ -2,28 +2,15 @@
 //Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-
 var compression = require('compression')
 var express = require('express');
 var bodyParser = require("body-parser");
 var fs = require('fs');
 var path = require('path');
- var cmd=require('node-cmd');
-
-var app = express()
-app.use(compression())
-app.use(express.static(__dirname + "/photo"));
-app.use(bodyParser.json());
-
-var server = app.listen(process.env.PORT || 8080, function () {
-  var port = server.address().port;
-  console.log("App now running on port", port);
-  cmd.run('fswebcam -r 1280x720 --no-banner ./photo/teste.jpg');
-});
-
+var cmd = require('node-cmd');
 
 //FIREBASE CONNECTION
-//var moment = require("moment");
+var moment = require("moment");
 var fireAdmin = require("firebase-admin");
 fireAdmin.initializeApp({
   credential: fireAdmin.credential.cert("./server/serviceAccountKey.json"),
@@ -32,6 +19,37 @@ fireAdmin.initializeApp({
 var logDatabase = fireAdmin.database();
 var refImage = logDatabase.ref("Base65Images");
 var logImage = refImage.child("logs");
+
+var app = express()
+app.use(compression())
+app.use(express.static(__dirname + "/photo"));
+app.use(bodyParser.json());
+
+app.get('/', function (req, res) {
+  res.send('hello world')
+});
+
+app.get('/takePicture', function (req, res) {
+  cmd.get(
+      'fswebcam -r 1280x720 --no-banner ./photo/teste.jpg',
+      function(data){
+          res.send('hello world');
+      }
+  );
+});
+
+var server = app.listen(process.env.PORT || 8080, function () {
+  var port = server.address().port;
+  console.log("App now running on port", port);
+  console.log(process.env.NODE_ENV);
+  cmd.get(
+        'fswebcam -r 1280x720 --no-banner ./photo/teste.jpg',
+        function(data){
+            console.log(data)
+        }
+    );
+});
+
 
 // function to encode file data to base64 encoded string
 function base64_encode(file) {
