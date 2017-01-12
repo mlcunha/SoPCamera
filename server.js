@@ -22,7 +22,8 @@ var logImage = refImage.child("logs");
 
 var app = express()
 app.use(compression())
-app.use(express.static(__dirname + "/photo"));
+//app.use(express.static(__dirname + "/photo"));
+app.use('/photo', express.static(path.join(__dirname, '/photo')));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
@@ -31,9 +32,10 @@ app.get('/', function (req, res) {
 
 app.get('/takePicture', function (req, res) {
   cmd.get(
-      'fswebcam -r 1280x720 --no-banner ./photo/teste.jpg',
-      function(data){
-          res.send('hello world');
+      'fswebcam -r 1280x720 --no-banner photo/teste.jpg',
+      function(data) {
+        console.log(data);
+        res.send('OK, Foto tirada');
       }
   );
 });
@@ -42,12 +44,6 @@ var server = app.listen(process.env.PORT || 8080, function () {
   var port = server.address().port;
   console.log("App now running on port", port);
   console.log(process.env.NODE_ENV);
-  cmd.get(
-        'fswebcam -r 1280x720 --no-banner ./photo/teste.jpg',
-        function(data){
-            console.log(data)
-        }
-    );
 });
 
 
