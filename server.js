@@ -54,7 +54,7 @@ function saveFile (_callback) {
 };
 //TAKE PICTURES
 app.get('/takePicture', function (req, res) {
-  cmd.get('fswebcam -r 1280x960 --no-banner ./photo/teste.jpg',
+  cmd.get('fswebcam -r 1280x960 --no-banner /photo/teste.jpg',
       function(data) {
         console.log('Salvou Imagem');
         //console.log(data);
