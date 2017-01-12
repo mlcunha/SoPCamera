@@ -37,6 +37,7 @@ function base64_encode(file) {
     // convert binary data to base64 encoded string
     return new Buffer(bitmap).toString('base64');
 };
+//SAVE FILES
 function saveFile (_callback) {
   var base64str = base64_encode(path.join(__dirname,'/photo/teste.jpg'));
   var dataObj = {
@@ -51,14 +52,13 @@ function saveFile (_callback) {
     _callback(err,base64str);
   });
 };
-//saveFile();
+//TAKE PICTURES
 app.get('/takePicture', function (req, res) {
-  cmd.get(
-      'fswebcam -r 1280x960 --no-banner photo/teste.jpg',
+  cmd.get('fswebcam -r 1280x960 --no-banner ./photo/teste.jpg',
       function(data) {
         console.log('Salvou Imagem');
         //console.log(data);
-        saveFile(function(_err, _data){
+        saveFile(function(_err, _data) {
           if(!err) {
             res.send('Imagem Salva no Banco').end();
           } else {
@@ -68,7 +68,7 @@ app.get('/takePicture', function (req, res) {
       }
   );
 });
-
+//START SERVER
 var server = app.listen(process.env.PORT || 8080, function () {
   var port = server.address().port;
   console.log("App now running on port", port);
