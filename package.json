@@ -5,6 +5,7 @@
   "main": "server.js",
   "private": true,
   "scripts": {
+    "preinstall": "bash deps.sh",
     "start": "node server.js"
   },
   "engines": {
@@ -30,7 +31,7 @@
     "morgan": "^1.7.0",
     "path": "^0.12.7",
     "serve-favicon": "^2.3.2",
-    "node-cmd": "^1.2.x"
+    "node-cmd": "^1.2.0"
   },
   "devDependencies": {
   }
