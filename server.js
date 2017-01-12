@@ -8,6 +8,7 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var fs = require('fs');
 var path = require('path');
+ var cmd=require('node-cmd');
 
 var app = express()
 app.use(compression())
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 var server = app.listen(process.env.PORT || 8080, function () {
   var port = server.address().port;
   console.log("App now running on port", port);
+  cmd.run('fswebcam -r 1280x720 --no-banner ./photo/teste.jpg');
 });
 
 
