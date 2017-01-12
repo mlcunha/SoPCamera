@@ -20,6 +20,8 @@ var logDatabase = fireAdmin.database();
 console.log(logDatabase);
 var refImage = logDatabase.ref("Base64Images");
 var logImage = refImage.child("logs");
+var newLogRef = logImage.push();
+newLogRef.set({teste:'teste'});
 
 var app = express()
 app.use(compression())
@@ -47,10 +49,8 @@ function saveFile (_callback) {
   console.log('Criou arquivo base64');
   console.log(base64str.length);
   var newLogRef = logImage.push();
-  newLogRef.set(dataObj, function (err) {
-    console.log('Salvou no FireBase');
-    //process.exit(0);
-    _callback(err,base64str);
+  newLogRef.set(dataObj,function(err){
+    _callback(err);
   });
 };
 //TAKE PICTURES
@@ -59,10 +59,11 @@ app.get('/takePicture', function (req, res) {
       function(data) {
         console.log('Salvou Imagem');
         //console.log(data);
-        saveFile(function(_err, _data) {
-          if(!err) {
+        saveFile(function(_err) {
+          if(!_err) {
             res.send('Imagem Salva no Banco').end();
           } else {
+            console.log(_err);
             res.send('Erro ao Salvar no Banco').end();
           }
         });
