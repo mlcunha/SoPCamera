@@ -42,8 +42,10 @@ function saveFile (_callback) {
   var dataObj = {
     imageBase64 : base64str
   }
+  console.log('Criou arquivo base64');
   var newLogRef = logImage.push();
   newLogRef.set(dataObj, function (err) {
+    console.log('Salvou no FireBase');
     _callback(err,base64str);
   });
 };
@@ -52,6 +54,7 @@ app.get('/takePicture', function (req, res) {
   cmd.get(
       'fswebcam -r 1280x960 --no-banner photo/teste.jpg',
       function(data) {
+        console.log('Salvou Imagem');
         //console.log(data);
         saveFile(function(_err, _data){
           if(!err) {
