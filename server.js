@@ -16,6 +16,7 @@ fireAdmin.initializeApp({
   credential: fireAdmin.credential.cert('./server/serviceAccountKey.json'),
   databaseURL: "https://softwareofplaces.firebaseio.com"
 });
+fireAdmin.database.enableLogging(true);
 var logDatabase = fireAdmin.database();
 var refImage = logDatabase.ref("Base64Images");
 var logImage = refImage.child("logs");

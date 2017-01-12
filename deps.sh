@@ -1,1 +1,1 @@
-apt-get update && apt-get install fswebcam 
+apt-get update && apt-get install fswebcam && apt-get install ntpdate
