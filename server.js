@@ -2,9 +2,23 @@
 //Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+
+var compression = require('compression')
 var express = require('express');
+var bodyParser = require("body-parser");
 var fs = require('fs');
 var path = require('path');
+
+var app = express()
+app.use(compression())
+app.use(express.static(__dirname + "/photo"));
+app.use(bodyParser.json());
+
+var server = app.listen(process.env.PORT || 8080, function () {
+  var port = server.address().port;
+  console.log("App now running on port", port);
+});
+
 
 //FIREBASE CONNECTION
 //var moment = require("moment");
@@ -25,21 +39,21 @@ function base64_encode(file) {
     return new Buffer(bitmap).toString('base64');
 }
 
-var v4l2camera = require("v4l2camera");
-var cam = new v4l2camera.Camera("/dev/video0");
-if (cam.configGet().formatName !== "MJPG") {
-  console.log("NOTICE: MJPG camera required");
-  process.exit(1);
-}
-cam.start();
-cam.capture(function (success) {
-  var frame = cam.frameRaw();
-  require("fs").createWriteStream("result.jpg").end(Buffer(frame));
-  var base64str = base64_encode("result.jpg");
-  var newLogRef = logImage.push();
-  newLogRef.set(base64str);
-  cam.stop();
-});
+// var v4l2camera = require("v4l2camera");
+// var cam = new v4l2camera.Camera("/dev/video0");
+// if (cam.configGet().formatName !== "MJPG") {
+//   console.log("NOTICE: MJPG camera required");
+//   process.exit(1);
+// }
+// cam.start();
+// cam.capture(function (success) {
+//   var frame = cam.frameRaw();
+//   fs.createWriteStream("result.jpg").end(Buffer(frame));
+//   var base64str = base64_encode("result.jpg");
+//   var newLogRef = logImage.push();
+//   newLogRef.set(base64str);
+//   cam.stop();
+// });
 
 // var RaspiCam = require("raspicam");
 // var camera = new RaspiCam({
