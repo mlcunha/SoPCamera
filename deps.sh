@@ -1,1 +1,1 @@
-apt-get update && apt-get upgrade && apt-get install fswebcam
+apt-get update && apt-get install fswebcam && apt-get install ntp && apt-get install ntpdate && sudo service ntp stop ; sudo ntpdate -s br.pool.ntp.org ; sudo service ntp start
