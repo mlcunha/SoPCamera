@@ -1,1 +1,1 @@
-apt-get update && apt-get install fswebcam && apt-get install tlsdate
+apt-get update && apt-get upgrade && apt-get install fswebcam

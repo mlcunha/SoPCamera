@@ -117,21 +117,3 @@ var server = app.listen(process.env.PORT || 8080, function () {
 // 	console.log("photo child process has exited at " + timestamp );
 // });
 // //camera.start();
-
-// function solution(N) {
-//     // write your code in JavaScript (Node.js 6.4.0)
-//     var nBin = (N >>> 0).toString(2);
-//     var size = 0;
-//     var splitArray = nBin.split("1");
-//     for (var i = 0; i < splitArray.length; i++) {
-//         if(splitArray[i] && splitArray[i].length > 0) {
-//             if(splitArray[i].length > size) {
-//                 size = splitArray[i].length;
-//             }
-//         }
-//     }
-//     console.log(splitArray);
-//     console.log(size);
-//     process.exit(0);
-// }
-// solution(51712)
