@@ -58,7 +58,7 @@ app.get('/takePicture', function (req, res) {
         //console.log(data);
         saveFile(function(_err, _base64str) {
           if(!_err) {
-            res.send(_base64str).end();
+            res.json({"data":_base64str}).end();
           } else {
             console.log(_err);
             res.send('Erro ao Salvar no Banco').end();
