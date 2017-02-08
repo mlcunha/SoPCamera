@@ -6,6 +6,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var compression = require('compression')
 var express = require('express');
 var bodyParser = require("body-parser");
+var cors = require('cors');
 var fs = require('fs');
 var path = require('path');
 var cmd = require('node-cmd');
@@ -22,8 +23,9 @@ var logDatabase = fireAdmin.database();
 var refImage = logDatabase.ref("Base64Images");
 var logImage = refImage.child("logs");
 
-var app = express()
-app.use(compression())
+var app = express();
+app.use(cors());
+app.use(compression());
 app.use('/photo', express.static(path.join(__dirname, '/photo')));
 app.use(bodyParser.json());
 app.get('/', function (req, res) {
