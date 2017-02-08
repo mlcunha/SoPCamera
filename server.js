@@ -1,5 +1,6 @@
 'use strict';
 //Set default node environment to development
+//&& apt-get install ntp && apt-get install ntpdate && sudo service ntp stop ; sudo ntpdate -s ntp.inf.puc-rio.br; sudo service ntp start
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var compression = require('compression')
@@ -20,15 +21,11 @@ fireAdmin.database.enableLogging(true);
 var logDatabase = fireAdmin.database();
 var refImage = logDatabase.ref("Base64Images");
 var logImage = refImage.child("logs");
-var newLogRef = logImage.push();
-newLogRef.set({teste:'teste'});
 
 var app = express()
 app.use(compression())
-//app.use(express.static(__dirname + "/photo"));
 app.use('/photo', express.static(path.join(__dirname, '/photo')));
 app.use(bodyParser.json());
-
 app.get('/', function (req, res) {
   res.send('hello world')
 });
@@ -46,22 +43,22 @@ function saveFile (_callback) {
   var dataObj = {
     imageBase64 : base64str
   }
-  console.log('Criou arquivo base64');
-  console.log(base64str.length);
+  //console.log('Criou arquivo base64');
+  //console.log(base64str.length);
   var newLogRef = logImage.push();
   newLogRef.set(dataObj, function(error) {
-    _callback(error);
+    _callback(error, base64str);
   });
 };
 //TAKE PICTURES
 app.get('/takePicture', function (req, res) {
   cmd.get('fswebcam -r 1280x960 --no-banner ./photo/teste.jpg',
       function(data) {
-        console.log('Salvou Imagem');
+        //console.log('Salvou Imagem');
         //console.log(data);
-        saveFile(function(_err) {
+        saveFile(function(_err, _base64str) {
           if(!_err) {
-            res.send('Imagem Salva no Banco').end();
+            res.send(_base64str).end();
           } else {
             console.log(_err);
             res.send('Erro ao Salvar no Banco').end();
@@ -76,44 +73,3 @@ var server = app.listen(process.env.PORT || 8080, function () {
   console.log("App now running on port", port);
   console.log(process.env.NODE_ENV);
 });
-
-
-
-
-// var v4l2camera = require("v4l2camera");
-// var cam = new v4l2camera.Camera("/dev/video0");
-// if (cam.configGet().formatName !== "MJPG") {
-//   console.log("NOTICE: MJPG camera required");
-//   process.exit(1);
-// }
-// cam.start();
-// cam.capture(function (success) {
-//   var frame = cam.frameRaw();
-//   fs.createWriteStream("result.jpg").end(Buffer(frame));
-//   var base64str = base64_encode("result.jpg");
-//   var newLogRef = logImage.push();
-//   newLogRef.set(base64str);
-//   cam.stop();
-// });
-
-// var RaspiCam = require("raspicam");
-// var camera = new RaspiCam({
-// 	mode: "photo",
-// 	output: "./photo/image.jpg",
-// 	encoding: "jpg",
-// 	timeout: 0 // take the picture immediately
-// });
-// //var filePath = path.join(__dirname, './photo/image.jpg');
-// camera.on("start", function( err, timestamp ){
-// 	console.log("photo started at " + timestamp );
-// });
-// camera.on("read", function( err, timestamp, filename ) {
-//     console.log(filename);
-//     var base64str = base64_encode('./photo'+filename);
-//     var newLogRef = logImage.push();
-//     newLogRef.set(base64str);
-// });
-// camera.on("exit", function( timestamp ){
-// 	console.log("photo child process has exited at " + timestamp );
-// });
-// //camera.start();
