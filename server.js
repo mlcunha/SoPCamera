@@ -18,10 +18,6 @@ fireAdmin.initializeApp({
   credential: fireAdmin.credential.cert('./server/serviceAccountKey.json'),
   databaseURL: "https://softwareofplaces.firebaseio.com"
 });
-fireAdmin.database.enableLogging(true);
-var logDatabase = fireAdmin.database();
-var refImage = logDatabase.ref("Base64Images");
-var logImage = refImage.child("logs");
 
 var app = express();
 app.use(cors());
@@ -40,7 +36,7 @@ function base64_encode(file) {
     return new Buffer(bitmap).toString('base64');
 };
 //SAVE FILES
-function saveFile (_callback) {
+function saveFile (logImage,_callback) {
   var base64str = base64_encode(path.join(__dirname,'/photo/teste.jpg'));
   var dataObj = {
     imageBase64 : base64str
@@ -54,11 +50,15 @@ function saveFile (_callback) {
 };
 //TAKE PICTURES
 app.get('/takePicture', function (req, res) {
+  //fireAdmin.database.enableLogging(true);
+  var logDatabase = fireAdmin.database();
+  var refImage = logDatabase.ref("Base64Images");
+  var logImage = refImage.child("logs");
   cmd.get('fswebcam -r 1280x960 --no-banner ./photo/teste.jpg',
       function(data) {
         //console.log('Salvou Imagem');
         //console.log(data);
-        saveFile(function(_err, _base64str) {
+        saveFile(logImage,function(_err, _base64str) {
           if(!_err) {
             res.json({"data":_base64str}).end();
           } else {
