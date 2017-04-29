@@ -14,10 +14,6 @@ var cmd = require('node-cmd');
 //FIREBASE CONNECTION
 var moment = require("moment");
 var fireAdmin = require("firebase-admin");
-fireAdmin.initializeApp({
-  credential: fireAdmin.credential.cert('./server/serviceAccountKey.json'),
-  databaseURL: "https://softwareofplaces.firebaseio.com"
-});
 
 var app = express();
 app.use(cors());
@@ -51,6 +47,10 @@ function saveFile (logImage,_callback) {
 //TAKE PICTURES
 app.get('/takePicture', function (req, res) {
   //fireAdmin.database.enableLogging(true);
+  fireAdmin.initializeApp({
+    credential: fireAdmin.credential.cert('./server/serviceAccountKey.json'),
+    databaseURL: "https://softwareofplaces.firebaseio.com"
+  });
   var logDatabase = fireAdmin.database();
   var refImage = logDatabase.ref("Base64Images");
   var logImage = refImage.child("logs");
