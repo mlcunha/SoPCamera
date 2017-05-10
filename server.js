@@ -19,6 +19,7 @@ fireAdmin.initializeApp({
   databaseURL: "https://softwareofplaces.firebaseio.com"
 });
 var logDatabase = fireAdmin.database();
+fireAdmin.database.enableLogging(true);
 
 var app = express();
 app.use(cors());
@@ -51,7 +52,6 @@ function saveFile (logImage,_callback) {
 };
 //TAKE PICTURES
 app.get('/takePicture', function (req, res) {
-  //fireAdmin.database.enableLogging(true);
   var refImage = logDatabase.ref("Base64Images");
   var logImage = refImage.child("logs");
   cmd.get('fswebcam -r 1280x960 --no-banner ./photo/teste.jpg',
