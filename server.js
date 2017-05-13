@@ -39,7 +39,8 @@ function base64_encode(file) {
 };
 //SAVE FILES
 function saveFile (logImage,_callback) {
-  var base64str = base64_encode(path.join(__dirname,'/photo/teste.jpg'));
+  //var base64str = base64_encode(path.join(__dirname,'/photo/teste.jpg'));
+  var base64str = base64_encode('./photo/teste.jpg');
   var dataObj = {
     imageBase64 : base64str
   }
