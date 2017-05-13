@@ -46,8 +46,10 @@ function saveFile (logImage,_callback) {
   //console.log('Criou arquivo base64');
   //console.log(base64str.length);
   var newLogRef = logImage.push();
-  newLogRef.set(dataObj, function(error) {
-    _callback(error, base64str);
+  var newLogKey = newLogRef.key();
+  dataObj['id'] = newLogKey
+  newLogRef.set(dataObj, function(error, data) {
+    _callback(error, newLogKey);
   });
 };
 //TAKE PICTURES
