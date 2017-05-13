@@ -47,7 +47,7 @@ function saveFile (logImage,_callback) {
   //console.log('Criou arquivo base64');
   //console.log(base64str.length);
   var newLogRef = logImage.push();
-  var newLogKey = newLogRef.key();
+  var newLogKey = newLogRef.key;
   console.log(newLogKey);
   dataObj['id'] = newLogKey;
   newLogRef.set(dataObj, function(error) {
