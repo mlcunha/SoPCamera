@@ -47,8 +47,9 @@ function saveFile (logImage,_callback) {
   //console.log(base64str.length);
   var newLogRef = logImage.push();
   var newLogKey = newLogRef.key();
-  dataObj['id'] = newLogKey
-  newLogRef.set(dataObj, function(error, data) {
+  console.log(newLogKey);
+  dataObj['id'] = newLogKey;
+  newLogRef.set(dataObj, function(error) {
     _callback(error, newLogKey);
   });
 };
