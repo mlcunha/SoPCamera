@@ -42,6 +42,7 @@ function saveFile (logImage,_callback) {
   //var base64str = base64_encode(path.join(__dirname,'/photo/teste.jpg'));
   var base64str = base64_encode('./photo/teste.jpg');
   var dataObj = {
+    timeStamp : moment().valueOf(),
     imageBase64 : base64str
   }
   //console.log('Criou arquivo base64');
